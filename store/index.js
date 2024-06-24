@@ -15,7 +15,7 @@ const store = new Vuex.Store({
 		},
 		getUserInfo(state, data) {
 			state.userInfo = data;
-		} // test33
+		} // test55
 	}
 })
 
