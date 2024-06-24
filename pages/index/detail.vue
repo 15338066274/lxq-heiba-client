@@ -11,7 +11,7 @@
 			</u-navbar>
 		</view>
 		<view class="detail-content">
-			<view class="recharge-box">
+			<view v-if="!isStore" class="recharge-box">
 				<view class="recharge-con">
 					<view class="balance-item">
 						<view class="item-price">
@@ -25,6 +25,34 @@
 					<view class="discounts-item">
 						<text>充100 送20</text>
 					</view>
+				</view>
+			</view>
+			<view v-else class="member-box">
+				<view class="member-item">
+					<view class="item-title">
+						<text>本店会员</text>
+						<u--image
+							:src="arrow"
+							width="28rpx"
+							height="28rpx"
+							shape="circle"
+						></u--image>
+					</view>
+					<view class="item-price">￥<text>0.00</text></view>
+					<view class="item-meal">充100 送20</view>
+				</view>
+				<view class="member-item">
+					<view class="item-title">
+						<text>多店通用会员</text>
+						<u--image
+							:src="arrow"
+							width="28rpx"
+							height="28rpx"
+							shape="circle"
+						></u--image>
+					</view>
+					<view class="item-price">￥<text>0.00</text></view>
+					<view class="item-meal">充200 送50</view>
 				</view>
 			</view>
 			<view class="address-box">
@@ -92,8 +120,10 @@ export default {
 			czBtn: require("@/static/icon_cz.png"),
 			dayImg: require("@/static/24.png"),
 			ballImg: require("@/static/icon-qz.png"),
+			arrow: require("@/static/arrows.png"),
 			detailId: '',
 			detailData: {},
+			isStore: true,
 			ballStatusOption,
 			// 目标纬度
 			latitude: '28.228700',
@@ -242,6 +272,45 @@ export default {
 					border-radius: 10px;
 					color: #973E00;
 					padding: 5px 20px;
+				}
+			}
+		}
+		.member-box{
+			margin-top: 500rpx;
+			padding: 20rpx 0;
+			display: flex;
+			justify-content: space-between;
+			gap: 10px;
+			.member-item{
+				background: var(--member-bg) no-repeat;
+				background-size: contain;
+				min-height: 224rpx;
+				width: calc(50% - 5rpx);
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				.item-title{
+					display: flex;
+					flex-wrap: nowrap;
+					align-items: center;
+					text{
+						padding-right: 10rpx;
+					}
+				}
+				.item-price{
+					color: #000;
+					font-size: 14px;
+					text{
+						font-size: 24px;
+					}
+				}
+				.item-meal{
+					background: rgba(255, 255, 255, .7);
+					border-radius: 10px;
+					color: #973E00;
+					padding: 0 20px;
+					margin-bottom: 10px;
 				}
 			}
 		}
