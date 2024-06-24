@@ -1,0 +1,88 @@
+.personal-container {
+	min-height: 100%;
+	width: 100%;
+	background: url(@/static/my.png) no-repeat #BACAC6;
+	background-size: contain;
+	.head-box{
+		width: 100%;
+		display: flex;
+		flex-wrap: nowrap;
+		align-items: center;
+		padding: 150rpx 0 20rpx 32rpx;
+		.nick-name{
+			padding-left: 20rpx;
+			color: #fff;
+			font-size: 34rpx;
+		}
+		.my-edit{
+			padding: 0 20rpx;
+			color: #fff;
+			display: flex;
+			flex-wrap: nowrap;
+		}
+	}
+	.member-box{
+		margin-top: 40rpx;
+		padding: 20rpx;
+		display: flex;
+		justify-content: space-between;
+		gap: 10px;
+		.member-item{
+			background: url(@/static/member-bg.png) no-repeat;
+			background-size: contain;
+			min-height: 224rpx;
+			width: calc(50% - 5rpx);
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			.item-title{
+				display: flex;
+				flex-wrap: nowrap;
+				align-items: center;
+				text{
+					padding-right: 10rpx;
+				}
+			}
+			.item-price{
+				color: #000;
+				font-size: 14px;
+				text{
+					font-size: 24px;
+				}
+			}
+			.item-meal{
+				background: rgba(255, 255, 255, .7);
+				border-radius: 10px;
+				color: #973E00;
+				padding: 0 20px;
+				margin-bottom: 10px;
+			}
+		}
+	}
+	.my-menu {
+		margin-top: 10px;
+		padding: 0 20rpx;
+		display: flex;
+		flex-direction: column;
+		.menu-item{
+			background: rgba(255,255,255,0.8);
+			border-radius: 15px;
+			border: 1rpx solid #FFFFFF;
+			padding: 20rpx;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 10px;
+			.item-left{
+				display: flex;
+				flex-wrap: nowrap;
+				align-items: center;
+				text{
+					font-size: 16px;
+					padding-left: 6px;
+				}
+			}
+		}
+	}
+}

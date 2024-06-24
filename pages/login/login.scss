@@ -1,0 +1,65 @@
+.login-container {
+	background: #fff;
+	height: 100%;
+	overflow: hidden;
+	min-height: 100vh;
+	width: 100%;
+	position: relative;
+	.login-warp{
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		height: 100%;
+		.logo{
+			display: flex;
+			flex-direction: column;
+			.logo-txt{
+					padding-top: 20rpx;
+					justify-content: center;
+					text-align: center;
+				.txt{
+					font-size: 32rpx;
+					font-family: PingFang SC-Medium, PingFang SC;
+					font-weight: 500;
+					color: #131523;
+				}
+			}
+		}
+		.login-btn{
+			width: 100%;
+			padding-top: 100rpx;
+			display: flex;
+			flex-direction: column;
+			.logo_btn{
+				padding: 0 48rpx;
+				display: flex;
+				justify-content: center;
+				flex-direction: column;
+				/deep/.u-button--square{
+					border-radius: 16rpx !important;
+				}
+				.login-reg{
+					padding-bottom: 20rpx;
+					font-size: 28rpx;
+					font-family: PingFang SC-Regular, PingFang SC;
+					font-weight: 400;
+					color: #8A919F;
+					text-align: left;
+				}
+			}
+			.popup-radio{
+				padding: 20rpx 0 0 0;
+				font-size: 26rpx;
+				color: #8A919F;
+				/deep/.u-radio-group{
+					justify-content: center !important;
+				}
+				.bule{
+					color: $uni_color;
+				}
+			}
+		}
+	}
+}

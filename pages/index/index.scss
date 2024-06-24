@@ -1,0 +1,100 @@
+.index-container {
+    background: #BACAC6;
+    display: flex;
+    flex-direction: column;
+		min-height: 100vh;
+    width: 100%;
+		.bill-list {
+			width: calc(100% - 40rpx);
+			display: flex;
+			flex-direction: column;
+			padding: 32rpx 20rpx;
+			.bill-item{
+				width: calc(100% -  40rpx);
+				background: rgba(255,255,255,0.8);
+				border-radius: 30rpx;
+				border: 1rpx solid #FFFFFF;
+				padding: 20rpx;
+				display: flex;
+				justify-content: space-between;
+				flex-wrap: nowrap;
+				margin-bottom: 30rpx;
+				.bill-item-img{
+					width: 200rpx;
+				}
+				.bill-item-con{
+					flex: 1;
+					padding-left: 10px;
+					display: flex;
+					flex-direction: column;
+					.item-title{
+						display: flex;
+						flex-wrap: nowrap;
+						margin-bottom: 10px;
+						text{
+							font-weight: bold;
+							color: #000;
+							margin-right: 10rpx;
+							font-size: 13px;
+						}
+						.item-tag{
+							display: flex;
+							margin-right: 10rpx;
+						}
+					}
+					.item-address{
+						color: rgba(0,0,0,0.9);
+						margin-bottom: 15rpx;
+					}
+					.item-dz{
+						display: flex;
+						flex-wrap: nowrap;
+						color: rgba(0,0,0,0.9);
+						margin-bottom: 15rpx;
+						text{
+							padding-left: 10rpx;
+						}
+					}
+					.item-price{
+						display: flex;
+						flex-wrap: nowrap;
+						.price{
+							color: #FA5151;
+							font-family: PingFangSC, PingFang SC;
+							font-weight: 600;
+							font-size: 38rpx;
+							text{
+								font-size: 28rpx;
+							}
+						}
+					}
+				}
+			}
+		}
+	
+	.loading-icon {
+		width: 20px;
+		height: 20px;
+		margin-right: 5px;
+		color: #999999;
+	}
+	
+	.loading-text {
+	    margin-left: 2px;
+	    font-size: 16px;
+	    color: #999999;
+	}
+	
+	.loading-more {
+	    align-items: center;
+	    justify-content: center;
+	    padding-top: 10px;
+	    padding-bottom: 10px;
+	    text-align: center;
+	}
+	
+	.loading-more-text {
+	    font-size: 28rpx;
+	    color: #999;
+	}
+}
