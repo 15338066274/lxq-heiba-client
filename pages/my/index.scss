@@ -1,7 +1,7 @@
 .personal-container {
 	min-height: 100%;
 	width: 100%;
-	background: url(@/static/my.png) no-repeat #BACAC6;
+	background: var(--my-bg) no-repeat #BACAC6;
 	background-size: contain;
 	.head-box{
 		width: 100%;
@@ -28,7 +28,7 @@
 		justify-content: space-between;
 		gap: 10px;
 		.member-item{
-			background: url(@/static/member-bg.png) no-repeat;
+			background: var(--member-bg) no-repeat;
 			background-size: contain;
 			min-height: 224rpx;
 			width: calc(50% - 5rpx);

@@ -23,6 +23,15 @@
 			}
 		},
 		{
+			"path": "pages/index/billiard",
+			"style": {
+				"onReachBottomDistance":100,
+				"navigationBarTitleText": "开台",
+				"enablePullDownRefresh": true,
+				"navigationStyle": "custom"
+			}
+		},
+		{
 			"path": "pages/my/index",
 			"name":"My",
 			"style":{

@@ -47,7 +47,7 @@
 				</view>
 				<view class="ball-table-list">
 					<view class="row">
-						<view class="item-ball" v-for="(item, index) in ballList" :key="index">
+						<view class="item-ball" v-for="(item, index) in ballList" :key="index" @click="goBilliardPage(item)">
 							<view class="ball-bg" :class="{
 								'bg1': item.status === 1,
 								'bg2': item.status === 2,
@@ -169,13 +169,18 @@ export default {
 		},
 		callTel(){
 		  this.$tools.callPhone(this.tel)
+		},
+		goBilliardPage(data) {
+			uni.navigateTo({
+			  url: `/pages/index/billiard?id=${data.id}`
+			});
 		}
 	}
 }
 </script>
 <style lang="scss" scoped>
 .box-container{
-	background: url(@/static/detailbg.png) no-repeat #BACAC6;
+	background: var(--detail-bg) no-repeat #BACAC6;
 	background-size: contain;
 	display: flex;
 	flex-direction: column;
@@ -213,7 +218,7 @@ export default {
 		.recharge-box{
 			width: 100%;
 			margin-top: 500rpx;
-			background: url(@/static/yue_bg.png) no-repeat;
+			background: var(--yue-bg) no-repeat;
 			background-size: contain;
 			min-height: 216rpx;
 			.recharge-con{

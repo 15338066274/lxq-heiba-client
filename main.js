@@ -34,8 +34,8 @@ Vue.prototype.$adpid = "1111111111"
 App.mpType = 'app'
 
 // 全局注册
-import LoginDialog from 'components/login-dialog'
-Vue.component('login-dialog', LoginDialog)
+import RechargeDialog from 'components/recharge-dialog'
+Vue.component('recharge-dialog', RechargeDialog)
 
 // 引入全局 uView 框架
 import uView from '@/uni_modules/uview-ui';
