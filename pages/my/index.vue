@@ -129,7 +129,7 @@ export default {
 		toPages(route) {
 			uni.navigateTo({
 				url: route
-			});
+			})
 		},
 		editProfile() {
 			this.$refs['infoPop'].show()
