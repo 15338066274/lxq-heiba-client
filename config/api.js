@@ -1,10 +1,10 @@
 // 开发环境
 const dev = {
-	  common: "https://api-dev.langup.cn/api"
+	  common: "http://118.178.138.156:8886/billiard"
 };
 // 生产环境
 const prod = {
-  common: "https://api.langup.cn/api",
+  common: "http://118.178.138.156:8886/billiard",
 };
 
 //默认生产环境

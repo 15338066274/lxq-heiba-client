@@ -1,33 +1,16 @@
 <template>
 	<view class="box-container">
 		<!-- <view class="status_bar"></view> -->
-		<view class="img-box">
-			<u-navbar
-				:is-fixed="isFixed"
-				leftIconColor="#fff"
-				bgColor="transparent"
-				:border-bottom="false"
-				@leftClick="leftClick">
-			</u-navbar>
-		</view>
+		<u-navbar
+			:is-fixed="isFixed"
+			leftIconColor="#fff"
+			bgColor="transparent"
+			:border-bottom="false"
+			@leftClick="leftClick">
+		</u-navbar>
+		<view class="detail-header"></view>
 		<view class="detail-content">
-			<view v-if="!isStore" class="recharge-box">
-				<view class="recharge-con">
-					<view class="balance-item">
-						<view class="item-price">
-							<span>余额：￥</span>
-							<text>0.00</text>
-						</view>
-						<view class="item-btn">
-							<u--image :src="czBtn" width="216rpx" height="68rpx"></u--image>
-						</view>
-					</view>
-					<view class="discounts-item">
-						<text>充100 送20</text>
-					</view>
-				</view>
-			</view>
-			<view v-else class="member-box">
+			<view v-if="Number(detailObj.isMultipleShop)" class="member-box">
 				<view class="member-item">
 					<view class="item-title">
 						<text>本店会员</text>
@@ -38,8 +21,8 @@
 							shape="circle"
 						></u--image>
 					</view>
-					<view class="item-price">￥<text>0.00</text></view>
-					<view class="item-meal">充100 送20</view>
+					<view class="item-price">￥<text>{{balanceObj.shopBalance}}</text></view>
+					<view class="item-meal">充{{balanceObj.shopRechargeMoney}} 送{{balanceObj.shopGiveMoney}}</view>
 				</view>
 				<view class="member-item">
 					<view class="item-title">
@@ -51,21 +34,38 @@
 							shape="circle"
 						></u--image>
 					</view>
-					<view class="item-price">￥<text>0.00</text></view>
-					<view class="item-meal">充200 送50</view>
+					<view class="item-price">￥<text>{{balanceObj.multipleShopBalance}}</text></view>
+					<view class="item-meal">充{{balanceObj.multipleShopRechargeMoney}} 送{{balanceObj.multipleShopGiveMoney}}</view>
+				</view>
+			</view>
+			<view v-else class="recharge-box">
+				<view class="recharge-con">
+					<view class="balance-item">
+						<view class="item-price">
+							<span>余额：￥</span>
+							<text>{{balanceObj.shopBalance}}</text>
+						</view>
+						<view class="item-btn" @click="handleRecharge">
+							<u--image :src="czBtn" width="216rpx" height="68rpx"></u--image>
+						</view>
+					</view>
+					<view class="discounts-item">
+						<span>充{{balanceObj.shopRechargeMoney_1}} 送{{balanceObj.shopGiveMoney_1}}</span>
+						<span style="padding-left: 100rpx;">充{{balanceObj.shopRechargeMoney_2}} 送{{balanceObj.shopGiveMoney_2}}</span>
+					</view>
 				</view>
 			</view>
 			<view class="address-box">
 				<view class="address-text">
 					<view class="d-title">
-						<h1>龙小球-孝感学院店</h1>
-						<u-icon name="star"></u-icon>
+						<h1>{{detailData.name}}</h1>
+						<u-icon :name="isFavorite ? 'star-fill' : 'star'" :color="isFavorite ? '#04A77A' : '#b3b3b3'" @click="handleFavorite"></u-icon>
 					</view>
 					<u--image :src="dayImg" width="140rpx" height="38rpx"></u--image>
 				</view>
 				<view class="address-map">
 					<u-icon name="map"></u-icon>
-					<text>湖北省孝感市孝南区分丝南路133号</text>
+					<text>{{detailData.address}}</text>
 				</view>
 			</view>
 			<view class="ball-table">
@@ -104,12 +104,13 @@
 				<view class="phone-box" @click="callTel">电话联系</view>
 			</view>
 		</view>
+		<recharge-dialog ref="rechargeDialog" />
 	</view>
 </template>
 <script>
 import { ballStatusOption } from '@/utils/dicts'
 import storage from "@/utils/storage";
-import { updateReadCounts } from "@/api/index";
+import { getMemberBalance, getBilliardParlorInfo, getMemberIsFavorite, getMemberFavorite, getBilliardTableList } from "@/api/index";
 import {
 	mapState,
 	mapMutations
@@ -121,42 +122,111 @@ export default {
 			dayImg: require("@/static/24.png"),
 			ballImg: require("@/static/icon-qz.png"),
 			arrow: require("@/static/arrows.png"),
-			detailId: '',
-			detailData: {},
-			isStore: true,
+			detailObj: {},
+			detailData: {
+				"billiardParlorId": 2,
+				"locationLat": "30.912329",
+				"address": "湖北省孝感市孝南区董永路民邦槐荫东岸一期附属商业AA-116、117商铺",
+				"name": "龙小球-孝感民邦一期店",
+				"serviceHotline": "18674225550",
+				"locationLng": "113.963491",
+				"shopManagerMobile": "15323365456",
+				"joiningHotline": "18674225558"
+			},
 			ballStatusOption,
-			// 目标纬度
-			latitude: '28.228700',
-			// 目标经度
-			longitude: '112.939000',
-			name: '东方美地',
+			balanceObj: {
+				shopBalance: 235,
+				shopRechargeMoney_1: 100,
+				shopGiveMoney_1: 40,
+				shopRechargeMoney_2: 200,
+				shopGiveMoney_2: 100,
+			},
 			ballList: [{
-				billiardTableId: 1,
-				serialNumber: 1,
-				status: 1,
-				fee: 22,
-				cashPledge: 20,
-				residueDuration: 45
-			},
-			{
-				billiardTableId: 2,
-				serialNumber: 2,
-				status: 2,
-				fee: 22,
-				cashPledge: 20
-			},
-			{
-				billiardTableId: 3,
-				serialNumber: 3,
-				status: 3,
-				fee: 22,
-				cashPledge: 20
-			}]
+			"billiardTableId": 11,
+			"serialNumber": 1,
+			"status": 2,
+			"residueDuration": null,
+			"fee": 30,
+			"cashPledge": 120
+		},
+		{
+			"billiardTableId": 12,
+			"serialNumber": 2,
+			"status": 2,
+			"residueDuration": null,
+			"fee": 30,
+			"cashPledge": 120
+		},
+		{
+			"billiardTableId": 13,
+			"serialNumber": 3,
+			"status": 2,
+			"residueDuration": null,
+			"fee": 30,
+			"cashPledge": 120
+		},
+		{
+			"billiardTableId": 14,
+			"serialNumber": 4,
+			"status": 3,
+			"residueDuration": null,
+			"fee": 30,
+			"cashPledge": 120
+		},
+		{
+			"billiardTableId": 15,
+			"serialNumber": 5,
+			"status": 3,
+			"residueDuration": null,
+			"fee": 30,
+			"cashPledge": 120
+		},
+		{
+			"billiardTableId": 16,
+			"serialNumber": 6,
+			"status": 3,
+			"residueDuration": null,
+			"fee": 30,
+			"cashPledge": 120
+		},
+		{
+			"billiardTableId": 17,
+			"serialNumber": 7,
+			"status": 3,
+			"residueDuration": null,
+			"fee": 30,
+			"cashPledge": 120
+		},
+		{
+			"billiardTableId": 18,
+			"serialNumber": 8,
+			"status": 3,
+			"residueDuration": null,
+			"fee": 25,
+			"cashPledge": 100
+		},
+		{
+			"billiardTableId": 19,
+			"serialNumber": 9,
+			"status": 2,
+			"residueDuration": null,
+			"fee": 30,
+			"cashPledge": 120
+		},
+		{
+			"billiardTableId": 20,
+			"serialNumber": 10,
+			"status": 2,
+			"residueDuration": null,
+			"fee": 30,
+			"cashPledge": 120
+		}],
+			isFavorite: 0 // 是否收藏(0:未收藏,1:已收藏)
 		}
 	},
 	components:{},
 	onLoad (options) {
-		this.detailId = options.id;
+		this.detailObj = options;
 		this.init()
 	},
 	methods: {
@@ -173,18 +243,19 @@ export default {
 				delta: 1
 			})
 		},
+		// 地图导航
 		handleNavigation () {
 			const _this = this
-		if (!this.latitude || !this.longitude || !this.name) return
+		if (!this.detailData.locationLat || !this.detailData.locationLng || !this.detailData.name) return
 		// 微信
 		// #ifdef MP-WEIXIN
 		let _obj = {
-				latitude: parseFloat(this.latitude),
-				longitude: parseFloat(this.longitude),
-				name: this.name,
+				latitude: parseFloat(this.detailData.locationLat),
+				longitude: parseFloat(this.detailData.locationLng),
+				name: this.detailData.name,
 		}
 		if (this.address) {
-				_obj['address'] = this.address
+				_obj['address'] = this.detailData.address
 		}
 		uni.openLocation({
 				..._obj,
@@ -197,13 +268,72 @@ export default {
 		})
 		// #endif
 		},
+		// 打电话
 		callTel(){
-		  this.$tools.callPhone(this.tel)
+		  this.$tools.callPhone(this.detailData.shopManagerMobile)
 		},
+		// 跳转开台界面
 		goBilliardPage(data) {
 			uni.navigateTo({
 			  url: `/pages/index/billiard?id=${data.id}`
 			});
+		},
+		// 获取会员余额
+		getMemberBalanceFn() {
+			let params = {
+				memberId: '1',
+				billiardParlorId: this.detailObj.billiardParlorId,
+				isMultipleShop: this.detailObj.isMultipleShop
+			}
+			getMemberBalance(params).then(res => {
+				this.balanceObj = res.data.data
+			})
+		},
+		// 根据球房id获取球房信息
+		getBilliardParlorInfoFn() {
+			let params = {
+				billiardParlorId: this.detailObj.billiardParlorId
+			}
+			getBilliardParlorInfo(params).then(res => {
+				this.detailData = res.data.data
+			})
+		},
+		// 是否收藏
+		getMemberIsFavoriteFn() {
+			let params = {
+				memberId: '1',
+				billiardParlorId: this.detailObj.billiardParlorId
+			}
+			getMemberIsFavorite(params).then(res => {
+				this.isFavorite = res.data.isFavorite
+			})
+		},
+		// 点击收藏
+		handleFavorite() {
+			let params = {
+				memberId: '1',
+				billiardParlorId: this.detailObj.billiardParlorId,
+				operateType: this.isFavorite
+			}
+			getMemberFavorite(params).then(res => {
+				this.isFavorite = res.data.isFavorite
+			})
+		},
+		// 获取球桌列表
+		getBilliardTableListFn() {
+			let params = {
+				billiardParlorId: this.detailObj.billiardParlorId
+			}
+			getBilliardTableList(params).then(res => {
+				this.ballList = res.data.isFavorite
+			})
+		},
+		handleRecharge() {
+			const params = {
+				billiardParlorId: this.detailObj.billiardParlorId,
+				type: this.detailObj.isMultipleShop
+			}
+			this.$refs['rechargeDialog'].show(params)
 		}
 	}
 }
@@ -216,38 +346,19 @@ export default {
 	flex-direction: column;
 	min-height: 100vh;
 	width: 100%;
-	.img-box{
+	position: relative;
+	.detail-header{
 		width: 100%;
 		display: flex;
-		position: relative;
-		flex-direction: column;
-		z-index: 99;
-		.tel-box{
-			position: absolute;
-			bottom: 40px;
-			left: 90px;
-			z-index: 98;
-			.item-tel{
-				color: #000;
-				line-height: 24px;
-				padding-bottom: 10px;
-			}
-			.item-tel2{
-				color: #000;
-				line-height: 24px;
-			}
-		}
-		.imgs{
-			z-index: 80;
-		}
+		height: 460rpx;
 	}
 	.detail-content{
 		padding: 10px 10px 80px 10px;
 		display: flex;
 		flex-direction: column;
 		.recharge-box{
+			margin: 20rpx 0;
 			width: 100%;
-			margin-top: 500rpx;
 			background: var(--yue-bg) no-repeat;
 			background-size: contain;
 			min-height: 216rpx;
@@ -276,7 +387,6 @@ export default {
 			}
 		}
 		.member-box{
-			margin-top: 500rpx;
 			padding: 20rpx 0;
 			display: flex;
 			justify-content: space-between;
@@ -315,7 +425,6 @@ export default {
 			}
 		}
 		.address-box{
-			margin-top: 16px;
 			background: rgba(255,255,255,0.8);
 			border-radius: 15px;
 			border: 1rpx solid #FFFFFF;
@@ -351,7 +460,7 @@ export default {
 		}
 		.ball-table{
 			width: 100%;
-			margin-top: 16px;
+			margin-top: 10px;
 			.ball-table-top{
 				display: flex;
 				flex-wrap: nowrap;

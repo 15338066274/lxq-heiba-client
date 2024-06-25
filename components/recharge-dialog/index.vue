@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import { getMemberRechargeComboList } from "@/api/index";
 import {
 	mapState,
 	mapMutations
@@ -16,18 +17,54 @@ import {
 export default {
 	data() {
 		return {
-			isShow: false
+			isShow: false,
+			rechargeComboList: [{
+				"rechargeComboId": 6,
+				"comboSerialNumber": 1,
+				"rechargeMoney": 100,
+				"giveMoney": 40
+			},
+			{
+				"rechargeComboId": 7,
+				"comboSerialNumber": 2,
+				"rechargeMoney": 200,
+				"giveMoney": 100
+			},
+			{
+				"rechargeComboId": 8,
+				"comboSerialNumber": 3,
+				"rechargeMoney": 500,
+				"giveMoney": 300
+			},
+			{
+				"rechargeComboId": 9,
+				"comboSerialNumber": 4,
+				"rechargeMoney": 1000,
+				"giveMoney": 700
+			},
+			{
+				"rechargeComboId": 10,
+				"comboSerialNumber": 5,
+				"rechargeMoney": 3000,
+				"giveMoney": 3000
+			}]
 		}
 	},
 	methods: {
 		show(row) {
 			this.$nextTick(() => {
 				this.isShow = true
+				// this.getMemberRechargeComboListFn(row)
 			})
 		},
 		close() {
 			this.isShow = false
-		}
+		},
+		getMemberRechargeComboListFn(params) {
+			getMemberRechargeComboList(params).then(res => {
+				this.rechargeComboList = res.data.rechargeComboList
+			})
+		},
 	}
 }
 </script>
