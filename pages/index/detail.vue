@@ -258,13 +258,13 @@ export default {
 				_obj['address'] = this.detailData.address
 		}
 		uni.openLocation({
-				..._obj,
-				success: function (res) {
-				console.log('打开系统位置地图成功')
-				},
-				fail: function (error) {
+			..._obj,
+			success: function (res) {
+			console.log('打开系统位置地图成功')
+			},
+			fail: function (error) {
 				console.log(error)
-				}
+			}
 		})
 		// #endif
 		},
@@ -273,9 +273,19 @@ export default {
 		  this.$tools.callPhone(this.detailData.shopManagerMobile)
 		},
 		// 跳转开台界面
-		goBilliardPage(data) {
+		goBilliardPage(data) {			
+			const params = {
+				billiardTableId: data.billiardTableId,
+				billiardParlorId: this.detailObj.billiardParlorId,
+				isMultipleShop: this.detailObj.isMultipleShop,
+				shopManagerMobile: this.detailData.shopManagerMobile
+			};
+			// 使用模板字符串构建URL
+			const queryString = Object.keys(params)
+			  .map(key => `${key}=${encodeURIComponent(params[key])}`)
+			  .join('&');
 			uni.navigateTo({
-			  url: `/pages/index/billiard?id=${data.id}`
+			  url: `/pages/index/billiard?${queryString}`
 			});
 		},
 		// 获取会员余额

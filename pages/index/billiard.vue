@@ -16,35 +16,64 @@
 					<view class="title">hello 球友1288</view>
 					<view class="phone">18565091288</view>
 				</view>
-				<view class="info-tel">
+				<view class="info-tel" @click="callTel">
 					<u--image :src="telImg" width="48rpx" height="48rpx"></u--image>
 					<span>联系店长</span>
 				</view>
 			</view>
 			<view class="detail-intro">
-				<view class="intro-title">龙小球-孝感学院店</view>
-				<view class="intro-billard">孝感学院店-1号球桌</view>
+				<view class="intro-title">{{billiardTableObj.name}}</view>
+				<view class="intro-billard">{{billiardTableObj.shortName}}</view>
 				<view class="intro-btns">
 					<view class="sd-btn">
-						<view class="sd-price">￥22.96<span>/小时</span></view>
-						<view class="sd-yh">押金：100</view>
+						<view class="sd-price">￥{{billiardTableObj.fee}}<span>/小时</span></view>
+						<view class="sd-yh">押金：{{billiardTableObj.cashPledge}}</view>
 					</view>
-					<view class="yh-txt">优惠时段<u-icon name="arrow-right" color="#fff"></u-icon></view>
+					<view class="yh-txt" @click="handleDiscount">优惠时段<u-icon name="arrow-right" color="#fff"></u-icon></view>
 				</view>
 			</view>
-			<view class="recharge-box">
+			<view v-if="Number(detailObj.isMultipleShop)" class="member-box">
+				<view class="member-item">
+					<view class="item-title">
+						<text>本店会员</text>
+						<u--image
+							:src="arrow"
+							width="28rpx"
+							height="28rpx"
+							shape="circle"
+						></u--image>
+					</view>
+					<view class="item-price">￥<text>{{balanceObj.shopBalance}}</text></view>
+					<view class="item-meal">充{{balanceObj.shopRechargeMoney}} 送{{balanceObj.shopGiveMoney}}</view>
+				</view>
+				<view class="member-item">
+					<view class="item-title">
+						<text>多店通用会员</text>
+						<u--image
+							:src="arrow"
+							width="28rpx"
+							height="28rpx"
+							shape="circle"
+						></u--image>
+					</view>
+					<view class="item-price">￥<text>{{balanceObj.multipleShopBalance}}</text></view>
+					<view class="item-meal">充{{balanceObj.multipleShopRechargeMoney}} 送{{balanceObj.multipleShopGiveMoney}}</view>
+				</view>
+			</view>
+			<view v-else class="recharge-box">
 				<view class="recharge-con">
 					<view class="balance-item">
 						<view class="item-price">
 							<span>余额：￥</span>
-							<text>0.00</text>
+							<text>{{balanceObj.shopBalance}}</text>
 						</view>
-						<view class="item-btn">
+						<view class="item-btn" @click="handleRecharge">
 							<u--image :src="czBtn" width="216rpx" height="68rpx"></u--image>
 						</view>
 					</view>
 					<view class="discounts-item">
-						<text>充100 送20</text>
+						<span>充{{balanceObj.shopRechargeMoney_1}} 送{{balanceObj.shopGiveMoney_1}}</span>
+						<span style="padding-left: 100rpx;">充{{balanceObj.shopRechargeMoney_2}} 送{{balanceObj.shopGiveMoney_2}}</span>
 					</view>
 				</view>
 			</view>
@@ -102,10 +131,13 @@
 				</view>
 			</view>
 		</view>
+		<discounts-pop ref="discountsPop" />
 	</view>
 </template>
 <script>
+import { getBilliardTableInfo, getMemberBalance, getBilliardParlorDiscountsTimeFrame } from "@/api/index";
 import storage from "@/utils/storage"
+import DiscountsPop from './dialog/discounts-pop.vue';
 import {
 	mapState,
 	mapMutations
@@ -134,14 +166,74 @@ export default {
 				name: '限时特惠',
 				desc: '门店限时 促销优惠',
 				imgUrl: require("@/static/icon_kt4.png")
-			}]
+			}],
+			detailObj: {},
+			billiardTableObj: {
+				"billiardTableId": 14,
+				"cashPledge": 120,
+				"fee": 30,
+				"name": "龙小球-孝感民邦一期店",
+				"shortName": "民邦一期店-4号球桌"
+			},
+			balanceObj: {
+				shopBalance: 235,
+				shopRechargeMoney_1: 100,
+				shopGiveMoney_1: 40,
+				shopRechargeMoney_2: 200,
+				shopGiveMoney_2: 100,
+			},
+			serialList: [{
+			"serialNumber": 1,
+			"week": "周一",
+			"isDiscounts": 1,
+			"disTimeFrame": "3:00-8:00,12:00-21:00"
+		},
+		{
+			"serialNumber": 2,
+			"week": "周二",
+			"isDiscounts": 1,
+			"disTimeFrame": "3:00-8:00,12:00-21:00"
+		},
+		{
+			"serialNumber": 3,
+			"week": "周三",
+			"isDiscounts": 1,
+			"disTimeFrame": "3:00-8:00,12:00-21:00"
+		},
+		{
+			"serialNumber": 4,
+			"week": "周四",
+			"isDiscounts": 1,
+			"disTimeFrame": "3:00-8:00,12:00-21:00"
+		},
+		{
+			"serialNumber": 5,
+			"week": "周五",
+			"isDiscounts": 1,
+			"disTimeFrame": "3:00-8:00,12:00-21:00"
+		},
+		{
+			"serialNumber": 6,
+			"week": "周六",
+			"isDiscounts": 0,
+			"disTimeFrame": null
+		},
+		{
+			"serialNumber": 7,
+			"week": "周日",
+			"isDiscounts": 0,
+			"disTimeFrame": null
+		}]
 		}
 	},
-	components:{},
+	components:{
+		DiscountsPop
+	},
 	onShow() {
 		this.setTabsPosition();
 	},
 	onLoad (options) {
+		this.detailObj = options;
 		this.init()
 	},
 	methods: {
@@ -166,6 +258,40 @@ export default {
 				delta: 1
 			})
 		},
+		// 获取会员余额
+		getMemberBalanceFn() {
+			let params = {
+				memberId: '1',
+				billiardParlorId: this.detailObj.billiardParlorId,
+				isMultipleShop: this.detailObj.isMultipleShop
+			}
+			getMemberBalance(params).then(res => {
+				this.balanceObj = res.data.data
+			})
+		},
+		// 2.10开台详情-根据球桌id获取球桌信息
+		getBilliardTableInfoFn() {
+			let params = {
+				billiardTableId: this.detailObj.billiardTableId
+			}
+			getBilliardTableInfo(params).then(res => {
+				this.billiardTableObj = res.data.data
+			})
+		},
+		callTel() {
+			this.$tools.callPhone(this.detailObj.shopManagerMobile)
+		},
+		getBilliardParlorDiscountsTimeFrameFn() {
+			let params = {
+				billiardParlorId: this.detailObj.billiardParlorId
+			}
+			getBilliardParlorDiscountsTimeFrame(params).then(res => {
+				this.serialList = res.data.data
+			})
+		},
+		handleDiscount() {
+			this.$refs['discountsPop'].show(this.serialList)
+		}
 	}
 }
 </script>
@@ -301,6 +427,44 @@ export default {
 					border-radius: 10px;
 					color: #973E00;
 					padding: 5px 20px;
+				}
+			}
+		}
+		.member-box{
+			padding: 20rpx 0;
+			display: flex;
+			justify-content: space-between;
+			gap: 10px;
+			.member-item{
+				background: var(--member-bg) no-repeat;
+				background-size: contain;
+				min-height: 224rpx;
+				width: calc(50% - 5rpx);
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				.item-title{
+					display: flex;
+					flex-wrap: nowrap;
+					align-items: center;
+					text{
+						padding-right: 10rpx;
+					}
+				}
+				.item-price{
+					color: #000;
+					font-size: 14px;
+					text{
+						font-size: 24px;
+					}
+				}
+				.item-meal{
+					background: rgba(255, 255, 255, .7);
+					border-radius: 10px;
+					color: #973E00;
+					padding: 0 20px;
+					margin-bottom: 10px;
 				}
 			}
 		}

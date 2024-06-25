@@ -78,3 +78,48 @@ export function getMemberRechargeComboList(params) {
 		data: params
   });
 }
+
+/**
+ * 2.8会员充值-会员充值接口
+ */
+export function getMemberRecharge(params) {
+  return http.request({
+    url: `/member/recharge`,
+    method: "post",
+		data: params
+  });
+}
+
+/**
+ * 2.9开台详情-根据会员id获取会员信息
+ */
+
+export function getMemberInfo(params) {
+  return http.request({
+    url: `/member/info`,
+    method: "post",
+		data: params
+  });
+}
+
+/**
+ * 2.10开台详情-根据球桌id获取球桌信息
+ */
+export function getBilliardTableInfo(params) {
+  return http.request({
+    url: `/billiardTable/info`,
+    method: "post",
+		data: params
+  });
+}
+
+/**
+ * 2.11开台详情-获取优惠时段信息
+ */
+export function getBilliardParlorDiscountsTimeFrame(params) {
+  return http.request({
+    url: `/billiardParlor/discountsTimeFrame`,
+    method: "post",
+		data: params
+  });
+}
