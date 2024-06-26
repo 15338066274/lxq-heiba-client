@@ -118,7 +118,7 @@ export default {
 	width: 100%;
 	display: flex;
 	flex-direction: column;
-	background: url(@/static/my.png) no-repeat #BACAC6;
+	background: var(--my-bg) no-repeat #BACAC6;
 	background-size: contain;
 	.bill-head{
 		width: 100%;

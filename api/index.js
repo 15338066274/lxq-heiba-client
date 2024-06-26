@@ -123,3 +123,36 @@ export function getBilliardParlorDiscountsTimeFrame(params) {
 		data: params
   });
 }
+
+/**
+ * 2.12开台详情-押金缴费接口
+ */
+export function getBilliardTableCashPledge(params) {
+  return http.request({
+    url: `/billiardTable/cashPledge`,
+    method: "post",
+		data: params
+  });
+}
+
+/**
+ * 2.13开台详情-获取“定时开台/限时特惠开台”配置信息
+ */
+export function getBilliardTableBeginConfigList(params) {
+  return http.request({
+    url: `/billiardTable/beginConfig/list`,
+    method: "post",
+		data: params
+  });
+}
+
+/**
+ * 2.14开台详情-开台(“会员开台/押金开台”)
+ */
+export function getBilliardTableMemberBegin(params) {
+  return http.request({
+    url: `/billiardTable/memberBegin`,
+    method: "post",
+		data: params
+  });
+}

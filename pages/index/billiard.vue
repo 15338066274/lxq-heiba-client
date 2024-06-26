@@ -84,7 +84,7 @@
 				</view>
 				<view class="ball-table-content">
 					<view class="row">
-						<view class="item-ball" v-for="(item, index) in ballTabList" :key="index">
+						<view class="item-ball" v-for="(item, index) in ballTabList" :key="index" @click="handleTable(index)">
 							<view class="item-top">
 								<text>{{item.name}}</text>
 								<u-icon name="arrow-right"></u-icon>
@@ -187,43 +187,43 @@ export default {
 			"week": "周一",
 			"isDiscounts": 1,
 			"disTimeFrame": "3:00-8:00,12:00-21:00"
-		},
-		{
-			"serialNumber": 2,
-			"week": "周二",
-			"isDiscounts": 1,
-			"disTimeFrame": "3:00-8:00,12:00-21:00"
-		},
-		{
-			"serialNumber": 3,
-			"week": "周三",
-			"isDiscounts": 1,
-			"disTimeFrame": "3:00-8:00,12:00-21:00"
-		},
-		{
-			"serialNumber": 4,
-			"week": "周四",
-			"isDiscounts": 1,
-			"disTimeFrame": "3:00-8:00,12:00-21:00"
-		},
-		{
-			"serialNumber": 5,
-			"week": "周五",
-			"isDiscounts": 1,
-			"disTimeFrame": "3:00-8:00,12:00-21:00"
-		},
-		{
-			"serialNumber": 6,
-			"week": "周六",
-			"isDiscounts": 0,
-			"disTimeFrame": null
-		},
-		{
-			"serialNumber": 7,
-			"week": "周日",
-			"isDiscounts": 0,
-			"disTimeFrame": null
-		}]
+			},
+			{
+				"serialNumber": 2,
+				"week": "周二",
+				"isDiscounts": 1,
+				"disTimeFrame": "3:00-8:00,12:00-21:00"
+			},
+			{
+				"serialNumber": 3,
+				"week": "周三",
+				"isDiscounts": 1,
+				"disTimeFrame": "3:00-8:00,12:00-21:00"
+			},
+			{
+				"serialNumber": 4,
+				"week": "周四",
+				"isDiscounts": 1,
+				"disTimeFrame": "3:00-8:00,12:00-21:00"
+			},
+			{
+				"serialNumber": 5,
+				"week": "周五",
+				"isDiscounts": 1,
+				"disTimeFrame": "3:00-8:00,12:00-21:00"
+			},
+			{
+				"serialNumber": 6,
+				"week": "周六",
+				"isDiscounts": 0,
+				"disTimeFrame": null
+			},
+			{
+				"serialNumber": 7,
+				"week": "周日",
+				"isDiscounts": 0,
+				"disTimeFrame": null
+			}]
 		}
 	},
 	components:{
@@ -291,6 +291,29 @@ export default {
 		},
 		handleDiscount() {
 			this.$refs['discountsPop'].show(this.serialList)
+		},
+		handleTable(index) {
+			switch (index) {
+				case 0:
+					
+					break;
+				case 1:
+					
+					break;
+				case 2:
+					uni.navigateTo({
+					  url: `/pages/index/timed-tab?billiardTableId=${this.detailObj.billiardTableId}&type=${index+1}`
+					});
+					break;
+				case 3:
+					uni.navigateTo({
+					  url: `/pages/index/limited-time?billiardTableId=${this.detailObj.billiardTableId}&type=${index+1}`
+					});
+					break;
+				default:
+					console.log('0')
+					break;
+			}
 		}
 	}
 }
@@ -389,6 +412,7 @@ export default {
 					.sd-yh{
 						color: #FA5151;
 						font-size: 14px;
+						padding-left: 10px;
 					}
 				}
 				.yh-txt{
