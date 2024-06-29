@@ -127,7 +127,6 @@ export default {
 				justify-content: flex-start;
 				color: #000;
 				font-size: 16px;
-				font-weight: bold;
 				line-height: 24px;
 			}
 			.ball-table-content{

@@ -1,7 +1,7 @@
 <template>
 	<view class="info-wrap">
 		<view class="bill-list">
-			<view class="bill-item" v-for="(item, index) in billData" :key="index">
+			<view class="bill-item" v-for="(item, index) in billData" :key="index" @click="item.status !== 2 && goDetailPage(item)">
 				<view class="bill-item-img">
 					<u--image :src="statusIconDict[item.status]" width="200rpx" height="258rpx"></u--image>
 				</view>
@@ -33,48 +33,79 @@
 import storage from "@/utils/storage";
 import { mapState, mapMutations } from 'vuex';
 import { billStatusOption } from '@/utils/dicts'
+import { getMemberFavoriteList } from "@/api/my";
 export default {
 	data() {
 		return {
 			billData: [{
-				"billiardParlorId": '1',
-				"name": '龙小球-孝感学院店',
-				"address":"湖北省孝感市孝南区分丝南路133号",
-				"status":1,
-				"leisureTableNum":5,
-				"lowestFee":22.96,
-				"isMultipleShop":1,
-				"locationLng": "320.76",
-				"locationLat": "775.26",
-				"isShareActivity":1,
-				"distance": 900,
-				"beginTableWay":"1,2,3,4"
-			},{
-				"billiardParlorId": '1',
-				"name": '龙小球-孝感学院店',
-				"address":"湖北省孝感市孝南区分丝南路135号",
-				"status":2,
-				"leisureTableNum":5,
-				"lowestFee":22.96,
-				"isMultipleShop":1,
-				"locationLng": "320.76",
-				"locationLat": "775.26",
-				"isShareActivity":1,
-				"distance": 1300,
-				"beginTableWay":"1,2,3,4"
-			},{
-				"billiardParlorId": '1',
-				"name": '龙小球-孝感学院店',
-				"address":"湖北省孝感市孝南区分丝南路135号",
-				"status":3,
-				"leisureTableNum":0,
-				"lowestFee":22.96,
-				"isMultipleShop":1,
-				"locationLng": "320.76",
-				"locationLat": "775.26",
-				"isShareActivity":1,
-				"distance": 1800,
-				"beginTableWay":"1,2,3,4"
+				"billiardParlorId": 2,
+				"name": "龙小球-孝感民邦一期店",
+				"address": "湖北省孝感市孝南区董永路民邦槐荫东岸一期附属商业AA-116、117商铺",
+				"status": 3,
+				"leisureTableNum": 5,
+				"lowestFee": 25,
+				"isMultipleShop": 1,
+				"locationLng": "113.963491",
+				"locationLat": "30.912329",
+				"distance": 4.88,
+				"isShareActivity": 1,
+				"beginTableWay": "1,2,3,4"
+			},
+			{
+				"billiardParlorId": 3,
+				"name": "龙小球-孝感安业大厦店",
+				"address": "湖北省孝感市高新技术开发区乾坤大道19号安业大厦8楼802",
+				"status": 2,
+				"leisureTableNum": 1,
+				"lowestFee": 25,
+				"isMultipleShop": 1,
+				"locationLng": "113.944943",
+				"locationLat": "30.923651",
+				"distance": 6.75,
+				"isShareActivity": 0,
+				"beginTableWay": "1,2,3,4"
+			},
+			{
+				"billiardParlorId": 1,
+				"name": "龙小球-孝感车天地店",
+				"address": "湖北省孝感市孝南路澴川南路车天地22栋",
+				"status": 3,
+				"leisureTableNum": 3,
+				"lowestFee": 25,
+				"isMultipleShop": 1,
+				"locationLng": "113.917127",
+				"locationLat": "30.909044",
+				"distance": 7.32,
+				"isShareActivity": 1,
+				"beginTableWay": "1,2,3,4"
+			},
+			{
+				"billiardParlorId": 4,
+				"name": "龙小球-孝感学院店",
+				"address": "湖北省孝感市孝南区分丝南路133号",
+				"status": 1,
+				"leisureTableNum": 2,
+				"lowestFee": 25,
+				"isMultipleShop": 1,
+				"locationLng": "113.925736",
+				"locationLat": "30.942263",
+				"distance": 9.47,
+				"isShareActivity": 1,
+				"beginTableWay": "1,2"
+			},
+			{
+				"billiardParlorId": 5,
+				"name": "龙小球-孝感学院二店",
+				"address": "湖北省孝感市孝南区交通西路乾坤广场289号",
+				"status": 1,
+				"leisureTableNum": 0,
+				"lowestFee": 25,
+				"isMultipleShop": 0,
+				"locationLng": "113.925736",
+				"locationLat": "30.942263",
+				"distance": 9.47,
+				"isShareActivity": 0,
+				"beginTableWay": "1,2,3"
 			}],
 			statusIconDict:{
 				1: require("@/static/yyz.png"),
@@ -101,7 +132,45 @@ export default {
 		handleStatusColorDict(val) {
 			var _val = Number(val)
 			return this.billStatusOption.find(v => Number(v.value) === _val)?.color
-		}
+		},
+		getList() {
+			this.loadingType = 'loading';
+			let params = {
+				memberId: '1',
+				locationLng: this.locationLng,
+				locationLat: this.locationLat,
+				current: this.currentPage,
+				size: this.pageSize
+			}
+			getMemberFavoriteList(params).then(res => {
+				this.loadingType = 'noMore';
+				if (this.currentPage === 1) {
+					this.billData = res.data.records
+				} else {
+					this.billData = this.billData.concat(res.data.records)
+				}
+				this.totalCount = res.data.total
+				this.totalPage = res.data.pages
+				uni.stopPullDownRefresh();
+			})
+		},
+		goDetailPage(data) {
+			const params = {
+				billiardParlorId: data.billiardParlorId,
+				locationLng: data.locationLng,
+				locationLat: data.locationLat,
+				isMultipleShop: data.isMultipleShop,
+				isShareActivity: data.isShareActivity,
+				beginTableWay: data.beginTableWay
+			};
+			// 使用模板字符串构建URL
+			const queryString = Object.keys(params)
+			  .map(key => `${key}=${encodeURIComponent(params[key])}`)
+			  .join('&');
+			uni.navigateTo({
+			  url: `/pages/index/detail?${queryString}`
+			});
+		},
 	}
 };
 </script>

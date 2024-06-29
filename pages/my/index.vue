@@ -32,8 +32,7 @@
 						shape="circle"
 					></u--image>
 				</view>
-				<view class="item-price">￥<text>0.00</text></view>
-				<view class="item-meal">充100 送20</view>
+				<view class="item-price">￥<text>{{shopTotalBalance}}</text></view>
 			</view>
 			<view class="member-item" @click="toPages('/pages/mine/member-shop')">
 				<view class="item-title">
@@ -45,8 +44,7 @@
 						shape="circle"
 					></u--image>
 				</view>
-				<view class="item-price">￥<text>0.00</text></view>
-				<view class="item-meal">充200 送50</view>
+				<view class="item-price">￥<text>{{multipleShopTotalBalance}}</text></view>
 			</view>
 		</view>
 		<view class="my-menu">
@@ -71,6 +69,7 @@
 import InfoPop from './dialog/info-pop.vue';
 import storage from "@/utils/storage";
 import { mapState, mapMutations } from 'vuex';
+import { getMemberTotalBalance } from "@/api/my";
 export default {
 	data() {
 		return {
@@ -91,7 +90,9 @@ export default {
 				name: '分享好友',
 				imgUrl: require("@/static/icon-share.png"),
 				route: ""
-			}]
+			}],
+			multipleShopTotalBalance: undefined,
+			shopTotalBalance: undefined
 		}
 	},
 	components:{
@@ -101,9 +102,6 @@ export default {
 		this.initData();
 	},
 	onShow(){
-		/* uni.hideTabBar({
-			animation: false
-		}) */
 		this.initData()
 	},
 	methods: {
@@ -133,7 +131,15 @@ export default {
 		},
 		editProfile() {
 			this.$refs['infoPop'].show()
-		}
+		},
+		getList() {
+			let params = {
+				memberId: '1'
+			}
+			getMemberTotalBalance(params).then(res => {
+				
+			})
+		},
 	}
 }
 </script>

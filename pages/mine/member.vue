@@ -4,7 +4,7 @@
 			<view class="bill-item" v-for="(item, index) in billData" :key="index">
 				<view class="bill-item-between">
 					<view class="bill-item-img">
-						<u--image :src="statusIconDict[item.status]" width="200rpx" height="258rpx"></u--image>
+						<u--image :src="imgUrl" width="200rpx" height="258rpx"></u--image>
 					</view>
 					<view class="bill-item-con">
 						<view class="item-title">
@@ -19,9 +19,9 @@
 					</view>
 				</view>
 				<view class="bill-balance">
-					<view class="balance">余额：<span>0</span></view>
+					<view class="balance">余额：<span>{{item.shopBalance}}</span></view>
 					<view class="recharge">
-						<view class="recharge-btn">
+						<view class="recharge-btn" @click="handleRecharge(item)">
 							<u-button text="充值" shape="circle" color="#04A77A" size="small"></u-button>
 						</view>
 					</view>
@@ -32,6 +32,7 @@
 			<view class="balance">总余额：</view>
 			<view class="recharge">20</view>
 		</view>
+		<recharge-dialog ref="rechargeDialog" />
 	</view>
 </template>
 
@@ -39,62 +40,25 @@
 import storage from "@/utils/storage";
 import { mapState, mapMutations } from 'vuex';
 import { billStatusOption } from '@/utils/dicts'
+import { getMemberBalanceList } from "@/api/my";
 export default {
 	data() {
 		return {
 			billData: [{
-				"billiardParlorId": '1',
-				"name": '龙小球-孝感学院店',
-				"address":"湖北省孝感市孝南区分丝南路133号",
-				"status":1,
-				"leisureTableNum":5,
-				"lowestFee":22.96,
-				"isMultipleShop":1,
-				"locationLng": "320.76",
-				"locationLat": "775.26",
-				"isShareActivity":1,
-				"distance": 900,
-				"beginTableWay":"1,2,3,4"
-			},{
-				"billiardParlorId": '1',
-				"name": '龙小球-孝感学院店',
-				"address":"湖北省孝感市孝南区分丝南路135号",
-				"status":2,
-				"leisureTableNum":5,
-				"lowestFee":22.96,
-				"isMultipleShop":1,
-				"locationLng": "320.76",
-				"locationLat": "775.26",
-				"isShareActivity":1,
-				"distance": 1300,
-				"beginTableWay":"1,2,3,4"
-			},{
-				"billiardParlorId": '1',
-				"name": '龙小球-孝感学院店',
-				"address":"湖北省孝感市孝南区分丝南路135号",
-				"status":3,
-				"leisureTableNum":0,
-				"lowestFee":22.96,
-				"isMultipleShop":1,
-				"locationLng": "320.76",
-				"locationLat": "775.26",
-				"isShareActivity":1,
-				"distance": 1800,
-				"beginTableWay":"1,2,3,4"
+				"billiardParlorId": 2,
+				"name": "龙小球-孝感民邦一期店",
+				"leisureTableNum": 5,
+				"locationLng": "113.963491",
+				"locationLat": "30.912329",
+				"distance": 4.88,
+				"shopBalance": 235
 			}],
-			statusIconDict:{
-				1: require("@/static/yyz.png"),
-				2: require("@/static/zxz.png"),
-				3: require("@/static/syy.png")
-			},
+			imgUrl: require("@/static/yyz.png"),
 			billStatusOption
 		};
 	},
 	components:{},
 	onLoad() {
-		this.initData();
-	},
-	onShow() {
 		this.initData();
 	},
 	methods: {
@@ -107,6 +71,24 @@ export default {
 		handleStatusColorDict(val) {
 			var _val = Number(val)
 			return this.billStatusOption.find(v => Number(v.value) === _val)?.color
+		},
+		getList() {
+			this.loadingType = 'loading';
+			let params = {
+				memberId: '1',
+				locationLng: this.locationLng,
+				locationLat: this.locationLat
+			}
+			getMemberBalanceList(params).then(res => {
+				
+			})
+		},
+		handleRecharge(data) {
+			const params = {
+				billiardParlorId: data.billiardParlorId,
+				type: 0
+			}
+			this.$refs['rechargeDialog'].show(params)
 		}
 	}
 };
