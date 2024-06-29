@@ -13,8 +13,17 @@
 			<view class="ball-table">
 				<view class="ball-table-top">可使用</view>
 				<view class="ball-table-content">
-					<view class="content-item">
-						
+					<view class="coupon" v-for="(item, index) in tableData" :key="index">
+						<view class="coupon-left">
+							<view class="price">
+								<text class="current-price">¥{{item.money}}</text>
+								<text class="original-price">¥50</text>
+							</view>
+							<view class="details">
+								<text>使用时间：{{item.hours}}小时</text>
+							</view>
+						</view>
+						<button class="use-button">去使用</button>
 					</view>
 				</view>
 			</view>
@@ -22,7 +31,7 @@
 	</view>
 </template>
 <script>
-import { getBilliardTableInfo } from "@/api/index";
+import { getBilliardTableInfo, getBilliardTableBeginConfigList } from "@/api/index";
 import storage from "@/utils/storage"
 import {
 	mapState,
@@ -38,7 +47,39 @@ export default {
 				"fee": 30,
 				"name": "龙小球-孝感民邦一期店",
 				"shortName": "民邦一期店-4号球桌"
-			}
+			},
+			tableData: [
+				{
+					"hours": 2,
+					"serialNumber": 1,
+					"money": 45,
+					"configId": 515
+				},
+				{
+					"hours": 3,
+					"serialNumber": 2,
+					"money": 65,
+					"configId": 516
+				},
+				{
+					"hours": 4,
+					"serialNumber": 3,
+					"money": 85,
+					"configId": 517
+				},
+				{
+					"hours": 5,
+					"serialNumber": 4,
+					"money": 105,
+					"configId": 518
+				},
+				{
+					"hours": 6,
+					"serialNumber": 5,
+					"money": 120,
+					"configId": 519
+				}
+			]
 		}
 	},
 	components:{},
@@ -59,82 +100,18 @@ export default {
 				this.billiardTableObj = res.data.data
 			})
 		},
+		getBilliardTableBeginConfigListFn() {
+			let params = {
+				billiardTableId: this.detailObj.billiardTableId,
+				type: 4
+			}
+			getBilliardTableBeginConfigList(params).then(res => {
+				this.billiardTableObj = res.data.data
+			})
+		},
 	}
 }
 </script>
 <style lang="scss" scoped>
-.box_container{
-	background: #fff;
-	background-size: contain;
-	display: flex;
-	flex-direction: column;
-	min-height: 100vh;
-	width: 100%;
-	position: relative;
-	.detail-content{
-		padding: 10px;
-		display: flex;
-		flex-direction: column;
-		.detail-intro{
-			background: var(--store-bg) no-repeat;
-			background-size: contain;
-			display: flex;
-			flex-direction: column;
-			width: calc(100% - 40rpx);
-			height: calc(302rpx - 40rpx);
-			padding: 20rpx;
-			.intro-title{
-				color: #fff;
-				font-size: 12px;
-				line-height: 24px;
-			}
-			.intro-billard{
-				padding-top: 10rpx;
-				color: #fff;
-				font-size: 20px;
-				font-weight: bold;
-				line-height: 24px;
-			}
-			.intro-btns{
-				display: flex;
-				flex-wrap: nowrap;
-				margin-top: 10px;
-				align-items: center;
-				.sd-btn{
-					padding: 5px 10px;
-					background: rgba(255,255,255,0.9);
-					border-radius: 10px;
-					display: flex;
-					justify-content: space-between;
-					align-items: center;
-					.sd-price{
-						color: #FA5151;
-						font-size: 20px;
-						span{
-							font-size: 14px;
-						}
-					}
-				}
-			}
-		}
-		.ball-table{
-			width: 100%;
-			margin-top: 16px;
-			display: flex;
-			flex-direction: column;
-			.ball-table-top{
-				display: flex;
-				justify-content: flex-start;
-				color: #000;
-				font-size: 16px;
-				line-height: 24px;
-			}
-			.ball-table-content{
-				display: flex;
-				flex-direction: column;
-				margin-top: 16px;
-			}
-		}
-	}
-}
+@import './time.scss';
 </style>

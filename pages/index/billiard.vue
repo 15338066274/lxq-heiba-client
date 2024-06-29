@@ -431,7 +431,7 @@ export default {
 			background-size: contain;
 			min-height: 216rpx;
 			.recharge-con{
-				padding: 10px 16px;
+				padding: 4px 16px 10px;
 				display: flex;
 				flex-direction: column;
 				.balance-item{

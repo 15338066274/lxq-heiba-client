@@ -1,0 +1,201 @@
+.box_container{
+	background: #f8f8f8;
+	background-size: contain;
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	width: 100%;
+	position: relative;
+	.detail-content{
+		padding: 10px 10px 80px 10px;
+		display: flex;
+		flex-direction: column;
+		.detail-intro{
+			background: var(--store-bg) no-repeat;
+			background-size: contain;
+			display: flex;
+			flex-direction: column;
+			width: calc(100% - 40rpx);
+			height: calc(302rpx - 40rpx);
+			padding: 20rpx;
+			.intro-title{
+				color: #fff;
+				font-size: 12px;
+				line-height: 24px;
+			}
+			.intro-billard{
+				padding-top: 10rpx;
+				color: #fff;
+				font-size: 20px;
+				font-weight: bold;
+				line-height: 24px;
+			}
+			.intro-btns{
+				display: flex;
+				flex-wrap: nowrap;
+				margin-top: 10px;
+				align-items: center;
+				.sd-btn{
+					padding: 0 10px;
+					background: rgba(255,255,255,0.9);
+					border-radius: 10px;
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					.sd-price{
+						color: #FA5151;
+						font-size: 20px;
+						span{
+							font-size: 14px;
+						}
+					}
+					.sd-yh{
+						color: #FA5151;
+						font-size: 14px;
+						padding-left: 10px;
+					}
+				}
+				.yh-txt{
+					color: #fff;
+					font-size: 14px;
+					padding: 0 10px;
+					display: flex;
+					flex-wrap: nowrap;
+				}
+			}
+		}
+		.ball-table{
+			width: 100%;
+			margin-top: 16px;
+			.ball-table-content{
+				display: flex;
+				flex-direction: column;
+				margin-top: 16px;
+				.coupon {
+				  width: 100%;
+				  border: 1px solid #fedfb2;
+				  border-radius: 10px;
+				  margin-bottom: 10px;
+				  display: flex;
+				  justify-content: space-between;
+				  align-items: center;
+					background-color: #fff;
+					.coupon-left{
+						display: flex;
+						flex-wrap: nowrap;
+						.price {
+						  display: flex;
+						  flex-direction: column;
+						  align-items: center;
+							background-color: #fef2eb;
+							padding: 10px 15px;
+							.current-price {
+							  color: #FF6600;
+							  font-size: 20px;
+							  font-weight: bold;
+							}
+							
+							.original-price {
+							  color: #999;
+							  text-decoration: line-through;
+							}
+						}
+						.details {
+						  margin-left: 10px;
+							display: flex;
+							align-items: center;
+						}
+					}
+					
+					.use-button {
+					  background: linear-gradient(90deg, #FF6600, #FFD700);
+					  color: white;
+					  border: none;
+					  padding: 5px 20px;
+						border-radius: 30px;
+						margin: 0 10px 0 0;
+					}
+				}
+			}
+			.table-list{
+				width: 100%;
+				display: flex;
+				flex-direction: column;
+				.row{
+					display: grid;
+					grid-template-columns: 1fr 1fr;
+					gap: 10px;
+					margin-bottom: 16px;
+					.item-layout{
+						border: 1rpx solid #e1e1e1;
+						background-color: #fff;
+						border-radius: 8px;
+						display: flex;
+						align-items: center;
+						padding: 20px;
+						width: calc(100% - 40px);
+						justify-content: center;
+						.hour{
+							color: #000;
+							font-size: 24px;
+							margin-right: 10rpx;
+						}
+						span{
+							color: #666;
+							font-size: 14px;
+						}
+					}
+				}
+			}
+			.ball-table-tips{
+				width: 100%;
+				display: flex;
+				flex-direction: column;
+				h1{
+					color: #000;
+					font-size: 14px;
+					font-weight: bold;
+					line-height: 24px;
+				}
+				span{
+					color: #666;
+					font-size: 14px;
+					line-height: 24px;
+				}
+			}
+		}
+	}
+	.footer-button{
+		position: fixed;
+		width: calc(100% - 20px);
+		padding: 0 10px;
+		bottom: 10px;
+		background: #f8f8f8;
+		.custom-button {
+		  display: flex;
+		  justify-content: space-between;
+		  align-items: center;
+		  background: linear-gradient(90deg, #2e2e38 60%, #fcb90f 40%);
+		  color: white;
+		  width: calc(100% - 40px);
+		  height: 60px;
+		  border-radius: 30px;
+		  padding: 0 20px;
+			.left-section {
+			  display: flex;
+			  flex-direction: column;
+			  align-items: flex-start;
+			}
+			
+			.sub-text {
+			  font-size: 12px;
+			  color: gray;
+			}
+			
+			.right-section {
+			  font-weight: bold;
+			  color: white;
+			}
+		}
+	}
+}

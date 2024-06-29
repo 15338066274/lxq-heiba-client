@@ -30,7 +30,7 @@
 		</view>
 		<view class="footer-balance">
 			<view class="balance">总余额：</view>
-			<view class="recharge">20</view>
+			<view class="recharge">{{totalBalance}}</view>
 		</view>
 		<recharge-dialog ref="rechargeDialog" />
 	</view>
@@ -53,6 +53,7 @@ export default {
 				"distance": 4.88,
 				"shopBalance": 235
 			}],
+			totalBalance: 0,
 			imgUrl: require("@/static/yyz.png"),
 			billStatusOption
 		};
@@ -80,7 +81,10 @@ export default {
 				locationLat: this.locationLat
 			}
 			getMemberBalanceList(params).then(res => {
-				
+				if(data.code === 200) {
+					this.billData = res.data.data
+					this.totalBalance = this.billData.reduce((sum, item) => sum + item.shopBalance, 0);
+				}
 			})
 		},
 		handleRecharge(data) {

@@ -11,9 +11,31 @@
 				</view>
 			</view>
 			<view class="ball-table">
-				
+				<view class="table-list">
+				    <view class="row">
+							<view class="item-layout" v-for="(item, index) in tableData" :key="index">
+							    <view class="hour">{{item.hours}}</view>
+							    <span>小时开台</span>
+							</view>
+						</view>
+				</view>
+				<view class="ball-table-tips">
+					<h1>温馨提示：</h1>
+					<span>定时开台为预付费，提前结束不退费</span>
+				</view>
 			</view>
 		</view>
+		<view class="footer-button">
+			<view class="custom-button">
+				<view class="left-section">
+					<text>合计: ¥0</text>
+					<text class="sub-text">需支付</text>
+				</view>
+				<view class="right-section">
+					立即支付
+				</view>
+			</view>
+		</view>		
 	</view>
 </template>
 <script>
@@ -33,7 +55,69 @@ export default {
 				"fee": 30,
 				"name": "龙小球-孝感民邦一期店",
 				"shortName": "民邦一期店-4号球桌"
-			}
+			},
+			tableData: [
+				{
+					"hours": 1,
+					"serialNumber": 1,
+					"money": 25,
+					"configId": 131
+				},
+				{
+					"hours": 2,
+					"serialNumber": 2,
+					"money": 50,
+					"configId": 132
+				},
+				{
+					"hours": 3,
+					"serialNumber": 3,
+					"money": 75,
+					"configId": 133
+				},
+				{
+					"hours": 4,
+					"serialNumber": 4,
+					"money": 100,
+					"configId": 134
+				},
+				{
+					"hours": 5,
+					"serialNumber": 5,
+					"money": 125,
+					"configId": 135
+				},
+				{
+					"hours": 6,
+					"serialNumber": 6,
+					"money": 150,
+					"configId": 136
+				},
+				{
+					"hours": 7,
+					"serialNumber": 7,
+					"money": 175,
+					"configId": 137
+				},
+				{
+					"hours": 8,
+					"serialNumber": 8,
+					"money": 200,
+					"configId": 138
+				},
+				{
+					"hours": 9,
+					"serialNumber": 9,
+					"money": 225,
+					"configId": 139
+				},
+				{
+					"hours": 10,
+					"serialNumber": 10,
+					"money": 250,
+					"configId": 140
+				}
+			]
 		}
 	},
 	components:{},
@@ -58,81 +142,5 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.box_container{
-	background: #fff;
-	background-size: contain;
-	display: flex;
-	flex-direction: column;
-	min-height: 100vh;
-	width: 100%;
-	position: relative;
-	.detail-content{
-		padding: 10px;
-		display: flex;
-		flex-direction: column;
-		.detail-intro{
-			background: var(--store-bg) no-repeat;
-			background-size: contain;
-			display: flex;
-			flex-direction: column;
-			width: calc(100% - 40rpx);
-			height: calc(302rpx - 40rpx);
-			padding: 20rpx;
-			.intro-title{
-				color: #fff;
-				font-size: 12px;
-				line-height: 24px;
-			}
-			.intro-billard{
-				padding-top: 10rpx;
-				color: #fff;
-				font-size: 20px;
-				font-weight: bold;
-				line-height: 24px;
-			}
-			.intro-btns{
-				display: flex;
-				flex-wrap: nowrap;
-				margin-top: 10px;
-				align-items: center;
-				.sd-btn{
-					padding: 5px 10px;
-					background: rgba(255,255,255,0.9);
-					border-radius: 10px;
-					display: flex;
-					justify-content: space-between;
-					align-items: center;
-					.sd-price{
-						color: #FA5151;
-						font-size: 20px;
-						span{
-							font-size: 14px;
-						}
-					}
-					.sd-yh{
-						color: #FA5151;
-						font-size: 14px;
-						padding-left: 10px;
-					}
-				}
-				.yh-txt{
-					color: #fff;
-					font-size: 14px;
-					padding: 0 10px;
-					display: flex;
-					flex-wrap: nowrap;
-				}
-			}
-		}
-		.ball-table{
-			width: 100%;
-			margin-top: 16px;
-			.ball-table-content{
-				display: flex;
-				flex-direction: column;
-				margin-top: 16px;
-			}
-		}
-	}
-}
+@import './time.scss';
 </style>

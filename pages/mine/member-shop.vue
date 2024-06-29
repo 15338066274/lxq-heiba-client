@@ -7,7 +7,7 @@
 						<u--image :src="iconUrl" width="200rpx" height="258rpx"></u--image>
 					</view>
 					<view class="bill-item-con">
-						<view class="list-item" v-for="(item2, index2) in item.list" :key="index2">
+						<view class="list-item" v-for="(item2, index2) in item.billiardParlorList" :key="index2">
 							<view class="item-title">
 								<text>{{item2.name}}</text>
 							</view>
@@ -23,7 +23,7 @@
 					</view>
 				</view>
 				<view class="bill-balance">
-					<view class="balance">余额：<span>0</span></view>
+					<view class="balance">余额：<span>{{item.multipleShopBalance}}</span></view>
 					<view class="recharge">
 						<view class="recharge-btn">
 							<u-button text="充值" shape="circle" color="#04A77A" size="small"></u-button>
@@ -34,7 +34,7 @@
 		</view>
 		<view class="footer-balance">
 			<view class="balance">总余额：</view>
-			<view class="recharge">20</view>
+			<view class="recharge">{{totalBalance}}</view>
 		</view>
 	</view>
 </template>
@@ -42,37 +42,24 @@
 <script>
 import storage from "@/utils/storage";
 import { mapState, mapMutations } from 'vuex';
+import { getMemberMultipleBalanceList } from "@/api/my";
 export default {
 	data() {
 		return {
 			billData: [{
-				"billiardParlorId": '1',
-				"list": [{
-					"name": '龙小球-孝感学院店',
-					"distance":5.1,
-					"leisureTableNum": 4
-				},{
-					"name": '龙小球-孝感学院店2',
-					"distance":5.2,
-					"leisureTableNum": 4
-				},{
-					"name": '龙小球-孝感学院店3',
-					"distance":5.3,
-					"leisureTableNum": 4
-				}]
-			},
-			{
-				"billiardParlorId": '1',
-				"list": [{
-					"name": '龙小球-孝感学',
-					"distance":4.5,
-					"leisureTableNum": 4
-				},{
-					"name": '龙小球-孝感店',
-					"distance":5.2,
-					"leisureTableNum": 4
-				}]
+				"billiardParlorList": [
+					{
+						"billiardParlorId": 6,
+						"locationLat": "31.030339",
+						"distance": 27.82,
+						"name": "龙小球-云梦雅斯广场店",
+						"locationLng": "113.754878",
+						"leisureTableNum": 0
+					}
+				],
+				"multipleShopBalance": 150
 			}],
+			totalBalance: 0,
 			iconUrl: require("@/static/yyz.png")
 		};
 	},
@@ -93,7 +80,21 @@ export default {
 		handleStatusColorDict(val) {
 			var _val = Number(val)
 			return this.billStatusOption.find(v => Number(v.value) === _val)?.color
-		}
+		},
+		getList() {
+			this.loadingType = 'loading';
+			let params = {
+				memberId: '1',
+				locationLng: this.locationLng,
+				locationLat: this.locationLat
+			}
+			getMemberMultipleBalanceList(params).then(res => {
+				if(data.code === 200) {
+					this.billData = res.data.data
+					this.totalBalance = this.billData.reduce((sum, item) => sum + item.multipleShopBalance, 0);
+				}
+			})
+		},
 	}
 };
 </script>
