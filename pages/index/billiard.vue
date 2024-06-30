@@ -132,12 +132,14 @@
 			</view>
 		</view>
 		<discounts-pop ref="discountsPop" />
+		<member-pop ref="memberPop" />
 	</view>
 </template>
 <script>
 import { getBilliardTableInfo, getMemberBalance, getBilliardParlorDiscountsTimeFrame } from "@/api/index";
 import storage from "@/utils/storage"
-import DiscountsPop from './dialog/discounts-pop.vue';
+import DiscountsPop from './dialog/discounts-pop.vue'
+import MemberPop from './dialog/member-pop.vue'
 import {
 	mapState,
 	mapMutations
@@ -176,7 +178,7 @@ export default {
 				"shortName": "民邦一期店-4号球桌"
 			},
 			balanceObj: {
-				shopBalance: 235,
+				shopBalance: 25,
 				shopRechargeMoney_1: 100,
 				shopGiveMoney_1: 40,
 				shopRechargeMoney_2: 200,
@@ -227,7 +229,8 @@ export default {
 		}
 	},
 	components:{
-		DiscountsPop
+		DiscountsPop,
+		MemberPop
 	},
 	onShow() {
 		this.setTabsPosition();
@@ -295,7 +298,9 @@ export default {
 		handleTable(index) {
 			switch (index) {
 				case 0:
-					
+					if(this.balanceObj.shopBalance < this.billiardTableObj.cashPledge) {
+						this.$refs['memberPop'].show()
+					}
 					break;
 				case 1:
 					
